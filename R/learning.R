@@ -15,3 +15,12 @@ mean(2:6)
 
 library(tidyverse)
 r3::check_git_config()
+
+usethis::gh_token_help()
+
+
+
+usethis::create_github_token()
+
+
+# here is an example of a conflict
