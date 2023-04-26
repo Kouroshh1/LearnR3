@@ -1,28 +1,90 @@
-Kourosh wants to check the commit
-# This will be used for testing out Git 3rd trial
-
-
-# Basic of R --------------------------------------------------------------
-
-colnames(airquality)
-str(airquality)
-summary(airquality)
-1 + 1
-
-mean(2:6)
-
-# Loading packages --------------------------------------------------------
+# Load packages
 
 library(tidyverse)
-r3::check_git_config()
+library(NHANES)
 
-usethis::gh_token_help()
+# looking at data
+
+glimpse(NHANES)
+
+# Selecting columns
+
+select(NHANES, Age)
+
+select(NHANES, Age, Weight, BMI)
+
+select(NHANES, -HeadCirc) # removing column HeadCirc
+
+select(NHANES, starts_with("BP"))
+
+select(NHANES, ends_with("Day"))
+
+select(NHANES, contains("Age"))
+
+# create smaller NHANES dataset
+
+nhanes_small<-select(NHANES, Age, Gender,BMI, Diabetes, PhysActive, BPSysAve, Education)
+
+nhanes_small
+
+# Renaming columns
+
+nhanes_small <- rename_with(nhanes_small, snakecase::to_snake_case)
+
+nhanes_small
+
+# Renmaing specific
+
+nhanes_small <- rename(nhanes_small, sex = gender)
+
+# Trying out the pipe
+
+colnames(nhanes_small)
+nhanes_small %>% colnames()
+
+nhanes_small %>% select(phys_active) %>% rename(physically_active = phys_active)
+
+
+nhanes_small %>%
+    select(bp_sys_ave, education) %>% rename(bp_sys=bp_sys_ave, bp_dia=bp_dias_ave)
+
+select(nhanes_small, bmi, contains("age"))
+
+nhanes_small %>% select(bmi, contains("age"))
+
+nhanes_small %>%
+    select(starts_with("bp_")) %>%
+    rename(bp_systolic = bp_sys_ave)
 
 
 
-usethis::create_github_token()
+# Filtering
+
+nhanes_small %>%  filter(phys_active == "No")
+
+nhanes_small %>%  filter(phys_active != "No") # only yes
+
+nhanes_small %>% filter(bmi >= 25)
+
+# Combining logical operators
+
+nhanes_small %>% filter(bmi >= 25 & phys_active == "No")
+
+nhanes_small %>% filter(bmi >= 25| phys_active == "No")
 
 
+# Arrange data
 
-# This is a new changes in the line
+nhanes_small %>% arrange(age)
+
+nhanes_small %>% arrange(desc(age))
+
+
+nhanes_small %>% arrange(education,age)
+
+# Transform data
+
+nhanes_small %>% mutate(age = age *12, logged_bmi = log(bmi))
+
+nhanes_small %>% mutate(old = if_else(age >=30, "Yes", "No"))
 
