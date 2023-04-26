@@ -23,4 +23,4 @@ usethis::gh_token_help()
 usethis::create_github_token()
 
 
-# here is an example of a conflict edited
+# This is a new changes in the line
