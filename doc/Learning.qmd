@@ -36,4 +36,36 @@ nhanes_small %>%
   ungroup() %>%
   knitr::kable(caption = "Mean values of Age and BMI for education and diabetes status")
 ```
+
+
+## Prettier_table
+
+```{r excercise}
+
+nhanes_small %>%
+  filter(!is.na(diabetes),!is.na(education)) %>%
+  group_by(diabetes, education) %>%
+  summarise(
+    mean_age = mean(age, na.rm = TRUE),
+    mean_bmi = mean(bmi, na.rm = TRUE)
+  ) %>%
+  ungroup() %>%
+    mutate(
+    mean_age = round(mean_age, 1),
+    mean_bmi = round(mean_bmi, 1),
+    education = str_to_sentence(education)
+  ) %>%
+    rename(
+    "Diabetes Status" = diabetes, 
+    "Education" = education,
+    "Mean Age" = mean_age, 
+    "Mean BMI" = mean_bmi
+  ) %>%
+  knitr::kable(caption = "Mean values of Age and BMI for each education and diabetes status.")
+  
 ```
+
+Cute kitten in @fig-kitten-attack
+
+
+![Kitten attacking flowers](Images\kitten.jpg){#fig-kitten-attack width="50%" height="50%"}
