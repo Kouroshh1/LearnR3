@@ -41,31 +41,110 @@ nhanes_small %>%
 ## Prettier_table
 
 ```{r excercise}
-
 nhanes_small %>%
-  filter(!is.na(diabetes),!is.na(education)) %>%
+  filter(!is.na(diabetes), !is.na(education)) %>%
   group_by(diabetes, education) %>%
   summarise(
     mean_age = mean(age, na.rm = TRUE),
     mean_bmi = mean(bmi, na.rm = TRUE)
   ) %>%
   ungroup() %>%
-    mutate(
+  mutate(
     mean_age = round(mean_age, 1),
     mean_bmi = round(mean_bmi, 1),
     education = str_to_sentence(education)
   ) %>%
-    rename(
-    "Diabetes Status" = diabetes, 
+  rename(
+    "Diabetes Status" = diabetes,
     "Education" = education,
-    "Mean Age" = mean_age, 
+    "Mean Age" = mean_age,
     "Mean BMI" = mean_bmi
   ) %>%
   knitr::kable(caption = "Mean values of Age and BMI for each education and diabetes status.")
-  
 ```
 
 Cute kitten in @fig-kitten-attack
 
 
 ![Kitten attacking flowers](Images\kitten.jpg){#fig-kitten-attack width="50%" height="50%"}
+
+## visualizing data
+
+```{r}
+# creating histogram for BMI
+
+ggplot(nhanes_small, aes(x = bmi)) +
+  geom_histogram()
+```
+
+
+```{r}
+# create histogram for
+
+ggplot(nhanes_small, aes(x = bmi)) +
+  geom_histogram(na.rm = TRUE)
+```
+
+```{r}
+nhanes_small %>%
+  filter(bmi <= 60) %>%
+  ggplot(aes(x = bmi)) +
+  geom_histogram(na.rm = TRUE)
+```
+```{r}
+#| fig-cap: "Distribution of BMI."
+#| label: fig-bmi-histo
+nhanes_small %>%
+  filter(bmi <= 60) %>%
+  ggplot(aes(x = bmi)) +
+  geom_histogram(na.rm = TRUE)
+```
+```{r}
+# Create count barplot for education
+
+ggplot(nhanes_small, aes(x = education)) +
+  geom_bar()
+```
+
+```{r}
+# Create count barplot for diabetes status
+ggplot(nhanes_small, aes(x = diabetes)) +
+  geom_bar()
+```
+
+```{r}
+nhanes_small %>%
+  filter(!is.na(diabetes)) %>%
+  ggplot(aes(x = diabetes)) +
+  geom_bar()
+```
+
+
+```{r}
+nhanes_small %>%
+  filter(!is.na(education)) %>%
+  ggplot(aes(x = education)) +
+  geom_bar()
+```
+
+
+
+
+```{r}
+#| label: fig-diabetes-education
+#| fig-cap: "Counts of Diabetes and Education."
+#| fig-subcap:
+#|   - "Number of those with or without Diabetes."
+#|   - "Number of those with different educational status."
+#| layout-ncol: 2
+
+nhanes_small %>%
+  filter(!is.na(diabetes)) %>%
+  ggplot(aes(x = diabetes)) +
+  geom_bar()
+
+nhanes_small %>%
+  filter(!is.na(education)) %>%
+  ggplot(aes(x = education)) +
+  geom_bar()
+```
